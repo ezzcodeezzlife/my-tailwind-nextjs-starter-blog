@@ -2,7 +2,7 @@ const siteMetadata = {
   title: 'ezzcodeezzlife Blog',
   author: 'Fabian Stehle',
   headerTitle: 'ezzcodeezzlife Blog',
-  description: 'Blog blog created with Next.js from ezzcodeezzlife',
+  description: 'Blog created with Next.js from ezzcodeezzlife',
   language: 'en-us',
   theme: 'system', // system, dark or light
   siteUrl: 'https://tailwind-nextjs-starter-blog.vercel.app',
