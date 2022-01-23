@@ -1,0 +1,107 @@
+---
+title: 'How to use React Native Cluster Map'
+date: '2022-01-23'
+tags: ['react native', 'app', 'how to', 'cluster']
+draft: false
+summary: 'How to use React Native Cluster Map in your App'
+---
+
+# How to use React Native Cluster Map in your App:
+
+# react-native-cluster-map
+
+[![license](https://img.shields.io/github/license/mashape/apistatus.svg)]()
+[![Version](https://img.shields.io/npm/v/react-native-cluster-map.svg)](https://www.npmjs.com/package/react-native-cluster-map)
+[![npm](https://img.shields.io/npm/dt/react-native-cluster-map.svg)](https://www.npmjs.com/package/react-native-cluster-map)
+[![Email](https://img.shields.io/badge/contact-CODEMPIRE-blue.svg?style=flat)](mailto:sales@codempire.io)
+
+React Native MapView clustering component for iOS + Android
+
+## Installation
+
+1. Install [`react-native-maps`](https://github.com/react-native-community/react-native-maps/blob/master/docs/installation.md)
+
+2. Install this component
+
+```bash
+npm install --save react-native-cluster-map
+```
+
+## Usage
+
+```javascript
+import { Marker } from 'react-native-maps'
+import { ClusterMap } from 'react-native-cluster-map'
+
+;<ClusterMap
+  region={{
+    latitude: 37.78825,
+    longitude: -122.4324,
+    latitudeDelta: 0.0922,
+    longitudeDelta: 0.0421,
+  }}
+>
+  <Marker coordinate={{ latitude: 37.78725, longitude: -122.434 }} />
+  <Marker coordinate={{ latitude: 37.789, longitude: -122.431 }} />
+  <Marker coordinate={{ latitude: 37.78825, longitude: -122.4324 }} />
+</ClusterMap>
+```
+
+### Custom Cluster Marker
+
+You can customize cluster marker with **renderClusterMarker** prop
+
+> _MyMap.jsx_
+
+```javascript
+import { Marker } from "react-native-maps";
+import { MyCluster } from "./MyCluster";
+
+// ...
+
+renderCustomClusterMarker = (count) => <MyCluster count={count} />
+
+render () {
+  const { markers, region } = this.state;
+  return (
+    <ClusterMap
+      renderClusterMarker={this.renderCustomClusterMarker}
+      region={region}
+    >
+      {markers.map((marker) => (
+          <Marker {...marker} />
+      ))}
+    <ClusterMap>
+  )
+}
+
+```
+
+> _MyCluster.jsx_
+
+```javascript
+import * as React from 'react'
+import { View, Text, StyleSheet } from 'react-native'
+
+export const MyCluster = (props) => {
+  const { count } = props
+  return (
+    <View style={styles}>
+      <Text>{count}</Text>
+    </View>
+  )
+}
+
+const styles = StyleSheet.create({
+  width: 50,
+  height: 50,
+  borderRadius: 25,
+  backgroundColor: 'red',
+  justifyContent: 'center',
+  alignItems: 'center',
+})
+```
+
+### Result
+
+![Custom Marker Example](https://raw.githubusercontent.com/codempireio/react-native-cluster-map/master/demo/images/custom-marker.png)
