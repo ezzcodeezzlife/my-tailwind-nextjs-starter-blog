@@ -12,10 +12,10 @@ const siteMetadata = {
   socialBanner: '/static/images/twitter-card.png',
   email: 'appsplosion.help@gmail.com',
   github: 'https://github.com/ezzcodeezzlife',
-  twitter: 'https://twitter.com/Twitter',
-  facebook: 'https://facebook.com',
-  youtube: 'https://youtube.com',
-  linkedin: 'https://www.linkedin.com',
+  twitter: '',
+  facebook: '',
+  youtube: '',
+  linkedin: 'https://www.linkedin.com/in/fabian-stehle-04440122b/',
   locale: 'en-US',
   analytics: {
     // supports plausible, simpleAnalytics, umami or googleAnalytics
