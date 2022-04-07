@@ -35,6 +35,7 @@ class MyDocument extends Document {
           />
         </Head>
         <body className="antialiased text-black bg-white dark:bg-gray-900 dark:text-white">
+          <meta name="google-site-verification" content="VT2ShUR7R0Rr_RjjhHVPOtlcJnQiJJXLdBHM1zijMAs" />
           <Main />
           <NextScript />
         </body>
