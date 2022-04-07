@@ -16,6 +16,7 @@ export default function App({ Component, pageProps }) {
   return (
     <ThemeProvider attribute="class" defaultTheme={siteMetadata.theme}>
       <Head>
+        <meta name="google-site-verification" content="VT2ShUR7R0Rr_RjjhHVPOtlcJnQiJJXLdBHM1zijMAs" />
         <meta content="width=device-width, initial-scale=1" name="viewport" />
         <script
           async
