@@ -3,6 +3,7 @@ import '@/css/prism.css'
 
 import { ThemeProvider } from 'next-themes'
 import Head from 'next/head'
+import Script from 'next/script'
 
 import siteMetadata from '@/data/siteMetadata'
 import Analytics from '@/components/analytics'
@@ -17,12 +18,18 @@ export default function App({ Component, pageProps }) {
     <ThemeProvider attribute="class" defaultTheme={siteMetadata.theme}>
       <Head>
         <meta content="width=device-width, initial-scale=1" name="viewport" />
-        <script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8251732556629149"
-          crossOrigin="anonymous"
-        ></script>
       </Head>
+      <Script
+        id="Adsense-id"
+        data-ad-client="ca-pub-8251732556629149"
+        async
+        strategy="afterInteractive"
+        onError={(e) => {
+          console.error('Script failed to load', e)
+        }}
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
+      />
+
       {isDevelopment && isSocket && <ClientReload />}
       <Analytics />
       <LayoutWrapper>
