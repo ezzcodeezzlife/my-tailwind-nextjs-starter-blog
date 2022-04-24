@@ -1,10 +1,254 @@
 ---
-title: How to use Meme_Api with examples (Python, Javascript, C++, PHP, Go)
+title: How to use Meme_Api with examples (Python, Go, Javascript, C++)
 date: '2022-04-24'
-tags: ['memes', 'pyhton', 'javascript', 'c++', 'go', 'php', 'api', 'web']
+tags: ['memes', 'pyhton', 'javascript', 'c++', 'go', 'api', 'web']
 draft: false
-summary: Tutorial with examples explaining Meme_Api usage with diffrent languages
+summary: Tutorial with examples explaining Meme_Api usage with - languages
 images: []
 layout: PostLayout
 authors: ['default']
 ---
+
+# D3vd/Meme_ApiMeme API
+
+JSON API for a random meme scraped from reddit. API Endpoint for random meme: [https://meme-api.herokuapp.com/gimme](https://meme-api.herokuapp.com/gimme). By default the API grabs a random meme from '_memes_', '_dankmemes_', '_me_irl_' subreddits. You can also specify the subreddit. I used this API for this [project "Reddit to Instagram"](https://github.com/ezzcodeezzlife/reddit-to-instagram) myself.
+
+**Example Response for all languages:**
+
+```json
+{
+  "postLink": "https://redd.it/jiovfz",
+  "subreddit": "dankmemes",
+  "title": "*leaves call*",
+  "url": "https://i.redd.it/f7ibqp1dmiv51.gif",
+  "nsfw": false,
+  "spoiler": false,
+  "author": "Spartan-Yeet",
+  "ups": 3363,
+
+  // preview images of the meme sorted from lowest to highest quality
+  "preview": [
+    "https://preview.redd.it/f7ibqp1dmiv51.gif?width=108&crop=smart&format=png8&s=02b12609100c14f55c31fe046f413a9415804d62",
+    "https://preview.redd.it/f7ibqp1dmiv51.gif?width=216&crop=smart&format=png8&s=8da35457641a045e88e42a25eca64c14a6759f82",
+    "https://preview.redd.it/f7ibqp1dmiv51.gif?width=320&crop=smart&format=png8&s=f2250b007b8252c7063b8580c2aa72c5741766ae",
+    "https://preview.redd.it/f7ibqp1dmiv51.gif?width=640&crop=smart&format=png8&s=6cd99df5e58c976bc115bd080a1e6afdbd0d71e7"
+  ]
+}
+```
+
+## Python Example
+
+```python
+import requests
+
+response = requests.get("https://meme-api.herokuapp.com/gimme")
+if response.status_code == 200:
+    print("sucessfully fetched the data")
+    print(response.json())
+else:
+    print("Error" + response.status_code)
+```
+
+## Go example
+
+```go
+package main
+
+import (
+    "fmt"
+    "io/ioutil"
+    "log"
+    "net/http"
+    "os"
+)
+
+func main() {
+    response, err := http.Get("https://meme-api.herokuapp.com/gimme")
+
+    if err != nil {
+        fmt.Print(err.Error())
+        os.Exit(1)
+    }
+
+    responseData, err := ioutil.ReadAll(response.Body)
+    if err != nil {
+        log.Fatal(err)
+    }
+    fmt.Println(string(responseData))
+}
+```
+
+## Javascript Example (Reactjs, Nextjs, Angular)
+
+```javascript
+import fetch from 'node-fetch'
+
+fetch('https://meme-api.herokuapp.com/gimme')
+  .then((response) => response.json())
+  .then((data) => console.log(data)) //log to console
+  .catch((error) => console.log(error))
+```
+
+## C++ Example
+
+```cpp
+#include <iostream>
+#include <cpr.h>
+
+int main(int argc, char** argv) {
+    auto response = cpr::Get(cpr::Url{"https://meme-api.herokuapp.com/gimme"});
+    std::cout << response.text << std::endl; // prints the response
+}
+
+```
+
+### Specify Subreddit
+
+By default the API grabs a random meme from '_memes_', '_dankmemes_', '_me_irl_' subreddits. To provide your own custom subreddit use the following endpoint.
+
+Endpoint: [/gimme/SUBREDDIT](https://meme-api.herokuapp.com/gimme/SUBREDDIT)
+
+Example: [https://meme-api.herokuapp.com/gimme/wholesomememes](https://meme-api.herokuapp.com/gimme/wholesomememes)
+
+Response:
+
+```json
+{
+  "postLink": "https://redd.it/jhr5lf",
+  "subreddit": "wholesomememes",
+  "title": "Every time I visit",
+  "url": "https://i.redd.it/hsyyeb87v7v51.jpg",
+  "nsfw": false,
+  "spoiler": false,
+  "author": "pak_choy",
+  "ups": 1660,
+  "preview": [
+    "https://preview.redd.it/hsyyeb87v7v51.jpg?width=108&crop=smart&auto=webp&s=b76ddb91f212b2e304cad2cd9c5b71a6ddca832c",
+    "https://preview.redd.it/hsyyeb87v7v51.jpg?width=216&crop=smart&auto=webp&s=2bd0b104fd0825afc15d9faa7977c6801e6dae0b",
+    "https://preview.redd.it/hsyyeb87v7v51.jpg?width=320&crop=smart&auto=webp&s=7625c69e144c9cb187dd0be88f541918aca5cedd",
+    "https://preview.redd.it/hsyyeb87v7v51.jpg?width=640&crop=smart&auto=webp&s=e933f956e01d62810e68f12ed8b26a8178ecbb0f"
+  ]
+}
+```
+
+### Specify Count (MAX 50)
+
+In order to get a custom number of memes from a specific subreddit provide the name of the subreddit and the count in the following endpoint.
+
+Endpoint: [/gimme/SUBREDDIT/COUNT](https://meme-api.herokuapp.com/gimme/wholesomememes/2)
+
+Example with count 2 from "wholesomememes": [https://meme-api.herokuapp.com/gimme/wholesomememes/2](https://meme-api.herokuapp.com/gimme/wholesomememes/2)
+
+Response:
+
+```json
+{
+  "count": 2,
+  "memes": [
+    {
+      "postLink": "https://redd.it/ji1riw",
+      "subreddit": "wholesomememes",
+      "title": "It makes me feel good.",
+      "url": "https://i.redd.it/xuzd77yl8bv51.png",
+      "nsfw": false,
+      "spoiler": false,
+      "author": "polyesterairpods",
+      "ups": 306,
+      "preview": [
+        "https://preview.redd.it/xuzd77yl8bv51.png?width=108&crop=smart&auto=webp&s=9a0376741fbda988ceeb7d96fdec3982f102313e",
+        "https://preview.redd.it/xuzd77yl8bv51.png?width=216&crop=smart&auto=webp&s=ee2f287bf3f215da9c1cd88c865692b91512476d",
+        "https://preview.redd.it/xuzd77yl8bv51.png?width=320&crop=smart&auto=webp&s=88850d9155d51f568fdb0ad527c94d556cd8bd70",
+        "https://preview.redd.it/xuzd77yl8bv51.png?width=640&crop=smart&auto=webp&s=b7418b023b2f09cdc189a55ff1c57d531028bc3e"
+      ]
+    },
+    {
+      "postLink": "https://redd.it/jibifc",
+      "subreddit": "wholesomememes",
+      "title": "It really feels like that",
+      "url": "https://i.redd.it/vvpbl29prev51.jpg",
+      "nsfw": false,
+      "spoiler": false,
+      "author": "lolthebest",
+      "ups": 188,
+      "preview": [
+        "https://preview.redd.it/vvpbl29prev51.jpg?width=108&crop=smart&auto=webp&s=cf64f01dfaca5f41c2e87651e4b0e321e28fa47c",
+        "https://preview.redd.it/vvpbl29prev51.jpg?width=216&crop=smart&auto=webp&s=33acdf7ed7d943e1438039aa71fe9295ee2ff5a0",
+        "https://preview.redd.it/vvpbl29prev51.jpg?width=320&crop=smart&auto=webp&s=6a0497b998bd9364cdb97876aa54c147089270da",
+        "https://preview.redd.it/vvpbl29prev51.jpg?width=640&crop=smart&auto=webp&s=e68fbe686e92acb5977bcfc24dd57febd552afaf",
+        "https://preview.redd.it/vvpbl29prev51.jpg?width=960&crop=smart&auto=webp&s=1ba690cfe8d49480fdd55c6daee6f2692e9292e7",
+        "https://preview.redd.it/vvpbl29prev51.jpg?width=1080&crop=smart&auto=webp&s=44852004dba921a17ee4ade108980baab242805e"
+      ]
+    }
+  ]
+}
+```
+
+you can chage the code from the example above to your needs.
+
+## Known error codes:
+
+### Client-Side Errors
+
+### 404 Not Found
+
+This is by far the most common error code you can get. It indicates that the URL you used in your request doesn’t exist on the server.
+
+While this is a 4XX error, which usually means something on the client is wrong, this can also indicate a server problem. Sometimes API URLs change after a version update, but sometimes they change because something on the server went wrong.
+
+The best course of action is to check if you don’t have a typo in your client code before checking if the API has issues.
+
+### 400 Bad RequestPermalink
+
+The bad request status is one of the most generic error messages. It implies that you did something wrong in your request. If no additional error information is given in the response body, you have to check the docs. You could be missing a query or body field in the request, or a header could be wrong. It could also be that some of your request data might have the an incorrect format.
+
+### 429 Too Many RequestsPermalink
+
+Most API subscription plans have limits — the cheaper the plan, the fewer requests per second are allowed for your API key.
+
+If you’re sending too many requests in a short amount of time, consider throttling them in your client. This status can also indicate that you hit a daily, weekly, or monthly limit on your account.
+
+Sometimes an API sounds like a right fit until you see the limits, and suddenly it doesn’t work for your use case anymore. Check what’s part of your API subscription before integrating, otherwise you may run into problems weeks or months after integrating the API.
+
+### Server-Side Errors
+
+The 5XX group of status codes is usually related to server-side errors, but an invalid request that should respond with a 4XX can also lead to a 5XX error if not caught correctly on the server. Here are the 5 most common errors and how to fix them:
+
+### 500 Internal Server ErrorPermalink
+
+This status can mean anything really, but it usually indicates the API server crashed. It could have been caused by something request-related.
+
+Double-check the docs to make sure you did everything right: query fields, body fields, headers, format, etc.
+
+If that didn’t fix the problem, it might also have been related to an API update that introduced buggy code, or data the API loaded from an upstream service. In that case, your only cause of action is contacting the API support.
+
+### 502 Bad GatewayPermalink
+
+This status tells you that the server you were calling wasn’t the actual API server, but a gateway or proxy. The proxy server tries to call the API server in your name. The status also indicates that the API server didn’t answer. This could be related to a network problem, or simply because the API server crashed or was down for maintenance.
+
+This problem is usually just temporary and should be solved by the API provider, but you have to contact support if it persists.
+
+### 503 Service UnavailablePermalink
+
+The service unavailable status means the server is overloaded. Too many API requests were sent and now the API can’t handle any more of them. This problem solves itself when clients send fewer requests, but it could also mean that the API provider didn’t plan enough resources for all of its customers.
+
+If it fits your use case, you can make your client more resilient to this error by waiting to send more requests. But if the error keeps showing up, you have to contact the API provider.
+
+### 504 Gateway Timed OutPermalink
+
+Like the bad gateway status, this one tells you that the server you were calling is a proxy for the real API server. This time the problem is that the API server didn’t answer promptly.
+
+This could be related to high network latency between the proxy and the API server. It could also mean that the API server takes too long to process your request.
+
+To solve this problem, check if your request’s content could be related to that timeout. If you are requesting too much data or a calculation that takes too long, you should try and cut it down.
+
+If you think your request is reasonable and the status doesn’t go away, contact support.
+
+### 501 Not ImplementedPermalink
+
+The not implemented status is related to the HTTP method you used to request an URL. You can try a different method to make the request.
+
+Usually, requests with a wrong method simply result in a 404 not found status. A not-implemented status implies that the method isn’t implemented “yet.” The API creator can use this status to tell the clients that this method will be available to them in the future.
+
+## If you have further questions or problems with the script, please open an issue on GitHub or write a comment below:
+
+<center>[tiktodv3 - New Issue](https://github.com/D3vd/Meme_Api/issues/new/choose)</center>
