@@ -1,0 +1,94 @@
+---
+title: How to-use Instagram Bot DM Python Script for beginners
+date: '2022-04-27'
+tags: ['beginner', 'python', 'instagram', 'dm', 'bot']
+draft: false
+summary: Beginner tutorial how to use "Instagram Direct Message Bot" Python Script for beginners
+images: []
+layout: PostLayout
+authors: ['default']
+---
+
+This tutorial will show you how to use Instagram-Bot-DM Script Python. First you need to install a few prerequisites.
+
+# Install prerequisites
+
+## Install Python 3
+
+I recommend to install Python 3.7.2 or higher.
+[Download it here](https://www.python.org/downloads/)
+
+If you have problems with installing Python, you can use the tutorial:
+[realpython.com/installing-python/](https://realpython.com/installing-python/)
+
+## Install Git version control
+
+[Download it here](https://git-scm.com/downloads)
+
+## Install Google Chrome Browser
+
+[Download it here](https://www.google.com/intl/en_en/chrome/)
+
+Now you have everything to get started with tiktodv3 Python Script.
+
+# Get started
+
+## Clone the repository from GitHub
+
+```bash
+git clone https://github.com/CamTosh/instagram-bot-dm.git
+```
+
+or download the zip file from the GitHub repository and unzip it.
+
+## Change directory
+
+```bash
+cd instagram-bot-dm
+```
+
+Now you should be in the directory instagram-bot-dm.
+There should be some files in this directory:
+
+```
+instadm.py
+README.md
+requirements.txt
+...
+```
+
+## Install modules
+
+```bash
+pip install -r requirements.txt
+```
+
+This should install all the modules you need.
+
+## Quickstart Script:
+
+```python
+from instadm import InstaDM
+
+if __name__ == '__main__':
+	# Auto login
+	insta = InstaDM(username='your_username', password='your_password', headless=False)
+
+	# Send message
+	insta.sendMessage(user='username_target', message='Hey !')
+
+	# Send messageto two users
+	insta.sendGroupMessage(users=['user1', 'user2'], message='Hey !')
+```
+
+save the file as quicksart.py
+
+```bash
+pyhton quickstart.py
+```
+
+# Enjoy!
+
+## If you have further questions or problems with the script, please open an issue on GitHub or write a comment below:
+
+[Find more here](https://www.appsplosion.com/python?topic=instagram)
