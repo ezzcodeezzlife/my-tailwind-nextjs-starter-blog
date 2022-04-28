@@ -1,0 +1,528 @@
+---
+title: How to use "scraper-instagram" in your project - Beginner tutorial
+date: '2022-04-29'
+tags: ['instagram', 'instagram-scraper', 'scraper', 'nodejs', 'js']
+draft: false
+summary: Beginner tutorial how to use scraper-instagram npm package in your nodejs application
+images: []
+layout: PostLayout
+authors: ['default']
+---
+
+# scraper-instagram
+
+Scrape data from Instagram without applying for the authenticated API.
+
+## Getting started
+
+### Prerequisites
+
+- NodeJS
+- NPM
+- Yarn
+
+### Install
+
+From [npm](https://www.npmjs.com/package/scraper-instagram)
+
+`yarn add scraper-instagram`
+
+or
+
+`npm i scraper-instagram --save`
+
+### Test
+
+- `git clone https://git.kaki87.net/KaKi87/ig-scraper.git`
+- `yarn install` or `npm install`
+- `yarn test` or `npm run test`
+
+Optional environment variables for more complete testing :
+
+- `SESSION_ID` : a session ID for authentication test and authenticated tests
+- `PUBLIC_PROFILE` : a public profile to access
+- `PRIVATE_PROFILE` : a private profile to access
+- `STORY_PROFILE_ID` : a profile ID with a story to read
+- `STORY_PROFILE_USERNAME` : a profile username with a story to read
+- `HASHTAG` (default value : `cat`) : a hashtag to fetch
+- `LOCATION_ID` (default value : `6889842` aka. Paris) : a location to fetch
+- `POST` : a post to fetch
+- `SEARCH_PROFILE` : a profile to search for
+- `SEARCH_HASHTAG` (default value : `cats`) : a hashtag to search for
+- `SEARCH_LOCATION` (default value : `Paris`) : a location to search for
+
+Methods not covered by tests :
+
+- `subscribeUserPosts`
+- `subscribeHashtagPosts`
+- `subscribeAccountNotifications`
+
+### Usage
+
+```js
+const Insta = require('scraper-instagram')
+const InstaClient = new Insta()
+```
+
+#### Authentication
+
+Authentication allows you to access private profile as long as you follow them.
+
+##### Importing your session ID
+
+- Go to instagram.com
+- Login _(if not already logged in)_
+- Open development tools _(`Ctrl` + `Shift` + `I`)_
+- Get the `sessionid` cookie value
+  - For chromium-based browsers : `application` tab
+  - For firefox-based browsers : `storage` tab
+
+##### Code
+
+```js
+InstaClient.authBySessionId(yourSessionId)
+  .then((account) => console.log(account))
+  .catch((err) => console.error(err))
+```
+
+If authentication is successfull, you'll get the form data from `accounts/edit` :
+
+```json
+{
+  "first_name": "",
+  "last_name": "",
+  "email": "",
+  "is_email_confirmed": true,
+  "is_phone_confirmed": true,
+  "username": "",
+  "phone_number": "",
+  "gender": 1,
+  "birthday": null,
+  "biography": "",
+  "external_url": "",
+  "chaining_enabled": true,
+  "presence_disabled": false,
+  "business_account": false,
+  "usertag_review_enabled": false
+}
+```
+
+If your session ID is invalid, you'll get the `401` error.
+
+_Username/password authentication may be supported in the future._
+
+#### Get
+
+These methods allows you to get specific elements from Instagram while you know exactly what you're looking for.
+
+##### Errors handling
+
+`get` may return errors in the two following cases.
+
+- Request error : failed to get data from Instagram (HTTP code)
+- Parsing error : failed to parse data returned by Instagram (`406`)
+- No content : nothing to parse (`204`)
+- Authentication required : session ID required to access data (`401`)
+- Too many requests : rate limit exceeded (`429`)
+- Conflict : automation detected, password reset required (`409`)
+
+##### Get profile by username
+
+```js
+InstaClient.getProfile(username)
+  .then((profile) => console.log(profile))
+  .catch((err) => console.error(err))
+```
+
+Result
+
+- `id` _string_ - Instagram identifier, only used for stories
+- `name` _string_ - public full [name](https://help.instagram.com/583107688369069)
+- `pic` _url_ - public profile [picture](https://help.instagram.com/557544397610546)
+- `bio` _string_ - public biography
+- `website` _url_ - public website
+- [more info about bio & website](https://help.instagram.com/362497417173378)
+- `private` _boolean_ - account [private state](https://help.instagram.com/448523408565555)
+- `access` _boolean_ - access to the profile's feed
+- In order to have access to a private account's feed, you must have sent him a follow request that he accepted.
+- `verified` _boolean_ - account [verified state](https://help.instagram.com/854227311295302)
+- `followers` _integer_ - number of users following this profile
+- `following` _integer_ - number of users this profile follows
+- `posts` _integer_ - number of posts this profile published
+- `lastPosts` _array of posts_ - last posts
+- This property is empty (`[]`) when the profile doesn't have any post but `null` if `access` is `false` (denied).
+- `link` _url_ - link to the profile's page
+- `business` _string_ - business category (when applicable and profile unblocked)
+- `user` _object_ - user relevant properties **(while authenticated)** :
+  - `mutualFollowers` _array of usernames_ - people following you and this profile
+  - `blocking` _boolean_ - you blocked this profile
+  - `blocked` _boolean_ - this profile blocked you (only available property in `user` while `true`)
+  - `requesting` _boolean_ - you sent a follow request to this profile (if private)
+  - `requested` _boolean_ - this profile sent you a follow request (if yours is private)
+  - `following` _boolean_ - you're following this profile
+  - `followed` _boolean_ - this profile follows you
+
+##### Get profile story (requires authentication)
+
+##### Using profile ID
+
+```js
+InstaClient.getProfileStoryById(id)
+  .then((profile) => console.log(profile))
+  .catch((err) => console.error(err))
+```
+
+##### Using profile username (will automatically request profile ID)
+
+```js
+InstaClient.getProfileStory(username)
+  .then((profile) => console.log(profile))
+  .catch((err) => console.error(err))
+```
+
+##### Result
+
+- `unread` _boolean_ - profile story is unread
+- `author` _object_ - a subset of profile
+  - `username`
+  - `pic`
+- `user` _object_ - user relevant properties
+  - `requesting`
+  - `following`
+- `items` _array of stories_ - profile stories
+  - `url` _string_ - link to original story file (`jpg`, `mp4`, ...)
+  - `type` _string_ - story type : `photo` or `video`
+  - `timestamp` _epoch_
+  - `expirationTimestamp` _epoch_
+
+_Those methods will return `null` when a profile has no story._
+
+Note : calling this method will not mark the story as read.
+
+##### Get hashtag
+
+```js
+InstaClient.getHashtag(hashtag)
+  .then((hashtag) => console.log(hashtag))
+  .catch((err) => console.error(err))
+```
+
+Result
+
+- `pic` _url_ - hashtag profile pic (can't find out how it is chosen)
+- `posts` _integer_ - number of posts containing this hashtag
+- `featuredPosts` _array of posts_ - featured posts published with this hashtag
+- `lastPosts` _array of posts_ - last posts published with this hashtag
+- [more info about hashtag posts](https://help.instagram.com/777754038986618)
+- `link` _url_ - link to the hashtag's page
+- `user` _object_ - user relevant properties **(while authenticated)** :
+  - `following` _boolean_ - you [subscribed](https://help.instagram.com/2003408499915301) to this hashtag (receiving posts in your personal feed)
+
+##### Get location by ID
+
+Unfortunately, using IDs is currently the only way to get a location, at least for now.
+
+```js
+InstaClient.getLocation(id)
+  .then((location) => console.log(location))
+  .catch((err) => console.error(err))
+```
+
+Result
+
+- `pic` _url_ - location profile pic
+- `posts` _integer_ - posts published from that location
+- `address` _object_
+  - `street` _string_
+  - `zipCode` _string_
+  - `city` _string_
+  - `latitude` _float_
+  - `longitude` _float_
+- `website` _url_ - place's website
+- `phone` _string_ - place's contact phone number
+- `featuredPosts` _array of posts_ - featured posts published from this location
+- `lastPosts` _array of posts_ - last posts published from this location
+- `link` _url_ - link to this location's page
+
+##### Array of posts
+
+This is a subset of a real post, containing the following properties :
+
+- `shortcode` _string_ - post identifier
+- `caption` _string_ - post description
+- `comments` _integer_ - number of comments
+- `likes` _integer_ - number of likes
+- `thumbnail` _url_ - post thumbnail
+- Always static image wether it's a photo or a video post, lower quality.
+
+##### Get post by shortcode
+
+The shortcode is the post's identifier : the link to a post is instagram.com/p/shortcode.
+
+```js
+InstaClient.getPost(shortcode)
+  .then((post) => console.log(post))
+  .catch((err) => console.error(err))
+```
+
+Result
+
+- `author` _object_ - a subset of a profile's properties.
+  - `username` _string_
+  - `name` _string_
+  - `pic` _url_
+  - `verified` _boolean_
+  - `link` _url_
+- `location`
+  - `name` _string_
+  - `city` _string_
+- `contents` _array of posts_
+  - `type` _string_ - post type : `photo` or `video`
+  - `url` _string_ - link to original post file (`jpg`, `mp4`, ...)
+  - if `type` is `video` :
+  - `thumbnail` _string_ - link to thumbnail
+  - `views` _integer_ - number of views
+- `tagged` _array of usernames_ - people tagged in post contents
+- `likes` _integer_ - number of likes
+- `caption` _string_ - post description
+- `hashtags` _array of hashtags_ - hashtags mentioned in post description
+- `mentions` _array of usernames_ - people mentioned in post description
+- `edited` _boolean_ - caption edited
+- `comments` _array of objects_ (Max 40)
+  - `user` _string_ - comment author's username
+  - `content` _string_ - comment content
+  - `timestamp` _epoch_
+  - `hashtags` _array of hashtags_
+  - `mentions` _array of usernames_
+  - `likes` _integer_
+- `commentCount` _integer_
+- `timestamp` _epoch_
+- `link` _string_ - link to the post
+
+#### Paginated getters (require authentication)
+
+Paginated getters allows bulk data downloads.
+
+Params :
+
+- `maxCount` _integer_ - max number of items to return
+- `pageId` _string_ (optional) - page navigation identifier
+
+Result : array + `nextPageId` property
+
+Sample :
+
+```js
+;(async () => {
+  const page0 = await somePaginatedGetter(someId, 50)
+  const page1 = await somePaginatedGetter(someId, 50, page0.nextPageId)
+  const page2 = await somePaginatedGetter(someId, 50, page1.nextPageId)
+})()
+```
+
+The `pageId`/`nextPageId` property may contain a string of digits, a base64 string, or a JSON string, but always must be leaved untouched.
+
+##### Get profile posts
+
+Result in array : full post object
+
+###### Using profile ID
+
+```js
+InstaClient.getProfilePostsById(profileId, maxCount, pageId)
+  .then((posts) => console.log(posts))
+  .catch((err) => console.error(err))
+```
+
+###### Using profile username (will automatically request profile ID)
+
+```js
+InstaClient.getProfilePosts(profileUsername, maxCount, pageId)
+  .then((posts) => console.log(posts))
+  .catch((err) => console.error(err))
+```
+
+##### Get post comments
+
+```js
+InstaClient.getPostComments(shortcode, maxCount, pageId)
+  .then((posts) => console.log(posts))
+  .catch((err) => console.error(err))
+```
+
+Result in array : comment object
+
+##### Get hashtag posts
+
+```js
+InstaClient.getHashtagPosts(hashtag, maxCount, pageId)
+  .then((posts) => console.log(posts))
+  .catch((err) => console.error(err))
+```
+
+Result in array : partial post object
+
+##### Get location posts
+
+```js
+InstaClient.getLocationPostsById(locationId, maxCount, pageId)
+  .then((posts) => console.log(posts))
+  .catch((err) => console.error(err))
+```
+
+Result in array : partial post object
+
+#### Search
+
+##### Search profile
+
+```js
+InstaClient.searchProfile(query)
+  .then((profiles) => console.log(profiles))
+  .catch((err) => console.error(err))
+```
+
+Result in array : a subset of profile.
+
+- `username`
+- `name`
+- `pic`
+- `private`
+- `verified`
+- `followers`
+- `user`
+  - `following`
+
+##### Search hashtag
+
+```js
+InstaClient.searchHashtag(hashtag)
+  .then((hashtags) => console.log(hashtags))
+  .catch((err) => console.error(err))
+```
+
+Result in array : a subset of hashtag.
+
+- `name`
+- `posts`
+
+##### Search location
+
+```js
+InstaClient.searchLocation(location)
+  .then((locations) => console.log(locations))
+  .catch((err) => console.error(err))
+```
+
+Result in array : a subset of location.
+
+- `id`
+- `name`
+- `address`
+  - `street`
+  - `city`
+  - `latitude`
+  - `longitude`
+
+#### Subscribe to posts
+
+- `options` _object_ (optional)
+  - `interval` _integer_ (optional) - time in seconds between requests. **Default : 30**
+  - `lastPostShortcode` _string_ (optional) - shortcode from which to begin if not the next one to be published.
+  - `fullPosts` _boolean_ (optional) - fetch full post data, additional request required
+
+##### From user
+
+```js
+InstaClient.subscribeUserPosts(
+  username,
+  (post, err) => {
+    if (post) console.log(post.shortcode)
+    else console.error(err)
+  },
+  {
+    interval,
+    lastPostShortcode,
+    fullPosts,
+  }
+)
+```
+
+##### From hashtag
+
+```js
+InstaClient.subscribeHashtagPosts(
+  hashtag,
+  (post, err) => {
+    if (post) console.log(post.shortcode)
+    else console.error(err)
+  },
+  {
+    interval,
+    lastPostShortcode,
+    fullPosts,
+  }
+)
+```
+
+#### Account requests (user-relevant methods)
+
+##### Get account notifications
+
+```js
+InstaClient.getAccountNotifications()
+  .then((notifications) => console.log(notifications))
+  .catch((err) => console.error(err))
+```
+
+Result in array : notification
+
+- `id` _string_ - Notification identifier
+- `timestamp` _epoch_
+- `type` _string_ - Notification type : `like`, `mention`, `comment`, `follow`
+- `post`
+  - `shortcode`
+  - `thumbnail`
+- `by`
+  - `username`
+  - `name`
+  - `pic`
+- `content` _string_ - Comment content (when applicable)
+
+##### Subscribe to account notifications
+
+- `options` _object_ (optional)
+  - `interval` _integer_ (optional) - time in seconds between requests. **Default : 30**
+  - `lastNotificationId` _string_ (optional) - Notification ID
+
+```js
+InstaClient.subscribeAccountNotifications(
+  (post, err) => {
+    if (post) console.log(post.shortcode)
+    else console.error(err)
+  },
+  {
+    interval,
+    lastNotificationId,
+  }
+)
+```
+
+##### Get account stories
+
+```js
+InstaClient.getAccountStories()
+  .then((stories) => console.log(stories))
+  .catch((err) => console.error(err))
+```
+
+Result in array : inbox-like
+
+- `unread`
+- `author` _object_ - a subset of a profile's properties.
+  - `id`
+  - `username`
+  - `pic`
+- `user` _object_ - user relevant properties
+  - `requesting`
+  - `following`
