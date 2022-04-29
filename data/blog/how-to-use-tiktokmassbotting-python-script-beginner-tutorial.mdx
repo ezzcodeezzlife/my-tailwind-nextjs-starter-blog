@@ -1,0 +1,139 @@
+---
+title: How to use TikTokMassBotting Python Script - Beginner tutorial
+date: '2022-04-29'
+tags: ['python', 'tiktok', 'bot', 'script']
+draft: false
+summary: Beginner tutorial how to get started with TikTokMassBotting & Python
+images: []
+layout: PostLayout
+authors: ['default']
+---
+
+This tutorial will show you how to use TikTokMassBotting Python Script. First you need to install a few prerequisites.
+
+# Install prerequisites
+
+## Install Python 3
+
+I recommend to install Python 3.6.2 or higher.
+[Download it here](https://www.python.org/downloads/)
+
+f you have Python installed then the easiest way you can check the version number is by typing "python" in your command prompt. It will show you the version number and if it is running on 32 bit or 64 bit and some other information.
+
+If you have problems with installing Python, you can use the tutorial:
+[realpython.com/installing-python/](https://realpython.com/installing-python/)
+
+## Install Git
+
+[Download it here](https://git-scm.com/downloads)
+
+If you want to learn more about Git version control, you can read this:
+[git-scm.com/book/en/v2](https://git-scm.com/book/en/v2)
+
+To check whether or not you have git installed, simply open a terminal window and type "git --version".
+
+# Get started
+
+## Clone the repository from GitHub
+
+This clones a repository into a newly created directory.
+
+```bash
+git clone https://github.com/Wizz1337/TikTokMassBotting
+```
+
+or download the zip file from the GitHub repository and unzip it.
+You could also use GitHub Desktop to clone the repository.
+
+## Change directory
+
+```bash
+cd TikTokMassBotting
+```
+
+Now you should be in the directory TikTokMassBotting.
+There should be some files in this directory:
+
+```
+Data
+README.md
+main.py
+utils.py
+...
+```
+
+We mostly care about the main.py file
+
+## Install modules
+
+Most used modules come preinstalled with Python, but you need to install one with pip. The Pyhton Package Manager comes with your Python installation.
+
+```bash
+pip install requests pystyle==1.5
+```
+
+This should install the module you need.
+
+## Get new proxys (optional)
+
+You can fill the Proxys.txt file with new proxys yourself or use the script to get new proxys.
+
+Go to the Data directory and run the following command:
+
+```bash
+cd data
+```
+
+```bash
+python ScrapProxie.py
+```
+
+This will fill the proxy.txt with new fresh proxies for your requests.
+
+## Run the script
+
+```bash
+python main.py
+```
+
+You will have to give the following input:
+
+```
+1. video url
+2. choose amount
+3. enter yes or no if you want to scrap proxies again
+4. enter proxy type you put in Proxies.txt
+5. enter proxy timeout | Id recommend to use 3
+6. enter thread | more thread = faster but make your computer slower. Id recommend 100 - 1000
+```
+
+## Run the Script on VPS (Virtual Private Server) or Raspberry Pi
+
+For better performance you can run the script on a VPS or Raspberry Pi. If you want to find out how to setup a VPS you can read this written guide:
+[vps.com/blog/how-to-setup-a-vps-server-for-linux-and-windows/](https://www.vps.com/blog/how-to-setup-a-vps-server-for-linux-and-windows/)
+
+For raspberry check out this article:
+[raspberrypi.org/magazine/how-to-install-python-on-a-raspberry-pi-3-or-4/](https://www.raspberrypi.org/magazine/how-to-install-python-on-a-raspberry-pi-3-or-4/)
+
+To schedule the script you can a cronjob.
+
+```bash
+crontab -e
+
+┬ ┬ ┬ ┬ ┬
+│ │ │ │ │
+│ │ │ │ └──── Weekday (0-7, Sunday is 0 or 7)
+│ │ │ └────── Month (1-12)
+│ │ └──────── Day (1-31)
+│ └────────── Hour (0-23)
+└──────────── Minute (0-59)
+
+```
+
+# Enjoy!
+
+## Trick from Wizz1337
+
+Run the Script once with every proxy type (http, socks4, socks5)
+
+## If you have further questions or problems with the script, please open an issue on GitHub or write a comment below:
