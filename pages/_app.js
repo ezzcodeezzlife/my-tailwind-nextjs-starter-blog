@@ -18,18 +18,10 @@ export default function App({ Component, pageProps }) {
     <ThemeProvider attribute="class" defaultTheme={siteMetadata.theme}>
       <Head>
         <meta content="width=device-width, initial-scale=1" name="viewport" />
-      
-      <Script
-        id="Adsense-id"
-        data-ad-client="ca-pub-8251732556629149"
-        async
-        strategy="afterInteractive"
-        onError={(e) => {
-          console.error('Script failed to load', e)
-        }}
-        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
-      />
+        <script data-ad-client="ca-pub-8251732556629149" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
       </Head>
+      
+      
       {isDevelopment && isSocket && <ClientReload />}
       <Analytics />
       <LayoutWrapper>
