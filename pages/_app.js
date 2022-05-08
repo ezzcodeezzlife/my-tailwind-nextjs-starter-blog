@@ -18,10 +18,13 @@ export default function App({ Component, pageProps }) {
     <ThemeProvider attribute="class" defaultTheme={siteMetadata.theme}>
       <Head>
         <meta content="width=device-width, initial-scale=1" name="viewport" />
-        <script data-ad-client="ca-pub-8251732556629149" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script
+          data-ad-client="ca-pub-8251732556629149"
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
+        ></script>
       </Head>
-      
-      
+
       {isDevelopment && isSocket && <ClientReload />}
       <Analytics />
       <LayoutWrapper>
