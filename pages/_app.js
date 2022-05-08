@@ -1,3 +1,4 @@
+/* eslint-disable */ 
 import '@/css/tailwind.css'
 import '@/css/prism.css'
 
@@ -18,6 +19,7 @@ export default function App({ Component, pageProps }) {
     <ThemeProvider attribute="class" defaultTheme={siteMetadata.theme}>
       <Head>
         <meta content="width=device-width, initial-scale=1" name="viewport" />
+        
         <script
           data-ad-client="ca-pub-8251732556629149"
           async
