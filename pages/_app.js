@@ -18,7 +18,7 @@ export default function App({ Component, pageProps }) {
     <ThemeProvider attribute="class" defaultTheme={siteMetadata.theme}>
       <Head>
         <meta content="width=device-width, initial-scale=1" name="viewport" />
-      </Head>
+      
       <Script
         id="Adsense-id"
         data-ad-client="ca-pub-8251732556629149"
@@ -29,7 +29,7 @@ export default function App({ Component, pageProps }) {
         }}
         src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
       />
-
+      </Head>
       {isDevelopment && isSocket && <ClientReload />}
       <Analytics />
       <LayoutWrapper>
