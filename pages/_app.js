@@ -25,6 +25,8 @@ export default function App({ Component, pageProps }) {
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
         ></script>
+
+        <meta name="a.validate.02" content="89R6kzDWSmqYAhdl3dKYy9rN1lLBPMQ3UZBO" />
       </Head>
 
       {isDevelopment && isSocket && <ClientReload />}
