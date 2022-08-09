@@ -28,7 +28,7 @@ export default function App({ Component, pageProps }) {
 
         <meta name="a.validate.02" content="89R6kzDWSmqYAhdl3dKYy9rN1lLBPMQ3UZBO" />
         
-        <meta name="propeller" content="ebe430599df2a2febe7f528b0fe34869">
+        <meta name="propeller" content="ebe430599df2a2febe7f528b0fe34869" />
       </Head>
 
       {isDevelopment && isSocket && <ClientReload />}
