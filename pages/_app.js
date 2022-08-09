@@ -10,6 +10,7 @@ import siteMetadata from '@/data/siteMetadata'
 import Analytics from '@/components/analytics'
 import LayoutWrapper from '@/components/LayoutWrapper'
 import { ClientReload } from '@/components/ClientReload'
+import Script from 'next/script'
 
 const isDevelopment = process.env.NODE_ENV === 'development'
 const isSocket = process.env.SOCKET
@@ -30,6 +31,15 @@ export default function App({ Component, pageProps }) {
         
         <meta name="propeller" content="ebe430599df2a2febe7f528b0fe34869" />
       </Head>
+
+      <Script
+  strategy="afterInteractive"
+  dangerouslySetInnerHTML={{
+    __html: `
+    (function(s,u,z,p){s.src=u,s.setAttribute('data-zone',z),p.appendChild(s);})(document.createElement('script'),'https://inklinkor.com/tag.min.js',5303388,document.body||document.documentElement)
+  `,
+  }}
+/>
 
       {isDevelopment && isSocket && <ClientReload />}
       <Analytics />
